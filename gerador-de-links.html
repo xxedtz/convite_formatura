@@ -35,7 +35,7 @@ li div{display:flex;gap:6px}li button,li a.b{padding:6px 10px;font-size:.9rem}
 <main>
   <div class="note"><b>Antes de usar:</b> publique a pasta <code>convite-vercel</code> na Vercel e cole abaixo o endereço do projeto (ex.: <code>https://meu-convite.vercel.app</code>). Cada convidado ganha uma página própria, como <code>/valeria/</code>.</div>
   <div><label for="base">Endereço do projeto na Vercel</label>
-  <input id="base" type="url" placeholder="https://meu-convite-pearl.vercel.app"></div>
+  <input id="base" type="url" placeholder="https://conviteformatura-eta.vercel.app/"></div>
   <div><label for="nomes">Convidados <small>(um por linha)</small></label>
   <textarea id="nomes">Valéria
 Aurélio
@@ -84,7 +84,7 @@ Racquel</textarea></div>
 const $=id=>document.getElementById(id);
 try{$("base").value=localStorage.getItem("base")||""}catch(e){}
 const slug=n=>n.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
-function link(n){let b=$("base").value.trim().replace(/\/+$/,"")||"https://SEU-PROJETO.vercel.app";return b+"/"+slug(n)+"/"}
+function link(n){let b=$("base").value.trim().replace(/\/+$/,"")||"https://conviteformatura-eta.vercel.app/";return b+"/"+slug(n)+"/"}
 function nomes(){return $("nomes").value.split("\n").map(s=>s.replace(/\s+/g," ").trim()).filter(Boolean)}
 function marcar(btn){const o=btn.textContent;btn.textContent="Copiado!";btn.classList.add("ok");setTimeout(()=>{btn.textContent=o;btn.classList.remove("ok")},1400)}
 function copiarFallback(txt){const t=document.createElement("textarea");t.value=txt;t.style.position="fixed";t.style.opacity="0";document.body.append(t);t.focus();t.select();try{document.execCommand("copy")}catch(e){}t.remove()}

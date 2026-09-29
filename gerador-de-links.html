@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Gerador de links do convite</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Pinyon+Script&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0b1a3a;--navy2:#132a5c;--gold:#c9a24b;--gold2:#f0d78c;--paper:#fbf8f1}
+*{box-sizing:border-box;margin:0}
+body{font-family:"Cormorant Garamond",Georgia,serif;font-size:18px;background:var(--paper);color:var(--navy)}
+header{background:linear-gradient(180deg,#16306a,var(--navy));color:#fff;text-align:center;padding:34px 20px}
+header h1{font-family:"Pinyon Script",cursive;font-weight:400;font-size:2.8rem;color:var(--gold2)}
+header p{color:#c7cfe4}
+main{max-width:760px;margin:0 auto;padding:24px 18px 60px;display:grid;gap:18px}
+label{display:block;font-weight:600;margin-bottom:6px}
+small{color:#5a6785}
+textarea,input{width:100%;font:inherit;padding:10px 12px;border:1px solid var(--gold);background:#fff;color:var(--navy)}
+textarea{min-height:190px;resize:vertical}
+:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+button,a.b{font:inherit;cursor:pointer;padding:9px 14px;border:1px solid var(--gold);background:var(--navy2);color:var(--gold2);text-decoration:none;display:inline-block}
+button:hover,a.b:hover{background:var(--navy)}
+.sec{background:none;color:var(--navy)}
+.bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+ul{list-style:none;padding:0;display:grid;gap:8px}
+li{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;border:1px solid rgba(201,162,75,.6);background:#fff;padding:10px 12px}
+li b{font-weight:600}li code{display:block;font-size:.78rem;color:#5a6785;word-break:break-all;font-family:ui-monospace,monospace}
+li div{display:flex;gap:6px}li button,li a.b{padding:6px 10px;font-size:.9rem}
+.ok{background:#2f6b45!important;color:#fff!important}
+.note{border-left:3px solid var(--gold);padding:8px 12px;background:#fff}
+</style>
+</head>
+<body>
+<header><h1>Gerador de links</h1><p>Um link personalizado para cada convidado</p></header>
+<main>
+  <div class="note"><b>Antes de usar:</b> publique a pasta <code>convite-vercel</code> na Vercel e cole abaixo o endereço do projeto (ex.: <code>https://meu-convite.vercel.app</code>). Cada convidado ganha uma página própria, como <code>/valeria/</code>.</div>
+  <div><label for="base">Endereço do projeto na Vercel</label>
+  <input id="base" type="url" placeholder="https://meu-convite.vercel.app"></div>
+  <div><label for="nomes">Convidados <small>(um por linha)</small></label>
+  <textarea id="nomes">Valéria
+Aurélio
+Greice
+Luizinho
+Givaldo
+Nilza
+Hosana
+Gleice
+Vilma
+Kelly
+Joelma
+Tio Luís
+Cilene
+Monica
+Cidinha
+Ana Clessia
+Ana Clécia
+Leydiane
+Erlialdon
+Liliane
+Maysa
+Diana
+Ronaldo
+Jean
+Mirela
+Jane
+Milene
+Cristina
+Paula
+Meire
+Vânia
+Johan
+Kelce
+Luciene
+Leoneide
+Isadora
+Vanessa
+Luzia
+Geane
+Racquel</textarea></div>
+  <div class="bar"><button id="all">Copiar todos os links</button><span id="cnt"></span></div>
+  <ul id="lista"></ul>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+try{$("base").value=localStorage.getItem("base")||""}catch(e){}
+const slug=n=>n.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
+function link(n){let b=$("base").value.trim().replace(/\/+$/,"")||"https://SEU-PROJETO.vercel.app";return b+"/"+slug(n)+"/"}
+function nomes(){return $("nomes").value.split("\n").map(s=>s.replace(/\s+/g," ").trim()).filter(Boolean)}
+function marcar(btn){const o=btn.textContent;btn.textContent="Copiado!";btn.classList.add("ok");setTimeout(()=>{btn.textContent=o;btn.classList.remove("ok")},1400)}
+function copiarFallback(txt){const t=document.createElement("textarea");t.value=txt;t.style.position="fixed";t.style.opacity="0";document.body.append(t);t.focus();t.select();try{document.execCommand("copy")}catch(e){}t.remove()}
+function copiar(txt,btn){if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(()=>marcar(btn),()=>{copiarFallback(txt);marcar(btn)})}else{copiarFallback(txt);marcar(btn)}}
+function render(){const l=nomes();try{localStorage.setItem("base",$("base").value)}catch(e){}
+$("cnt").textContent=l.length+" convidados";$("lista").innerHTML="";
+l.forEach(n=>{const u=link(n),li=document.createElement("li"),d=document.createElement("span"),b=document.createElement("b"),c=document.createElement("code"),a=document.createElement("div");
+b.textContent=n;c.textContent=u;d.append(b,c);
+const cp=document.createElement("button");cp.textContent="Copiar";cp.onclick=()=>copiar(u,cp);
+const w=document.createElement("a");w.className="b";w.target="_blank";w.rel="noopener";w.textContent="WhatsApp";
+w.href="https://wa.me/?text="+encodeURIComponent(`Olá, ${n}! Você está convidado(a) para a formatura do 3º ano, dia 12/12/2026. Abra o seu convite: ${u}`);
+a.append(cp,w);li.append(d,a);$("lista").append(li)})}
+$("all").onclick=()=>copiar(nomes().map(n=>n+" — "+link(n)).join("\n"),$("all"));
+$("base").oninput=$("nomes").oninput=render;render();
+</script>
+</body>
+</html>

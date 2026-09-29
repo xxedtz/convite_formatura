@@ -1,0 +1,10 @@
+COMO PUBLICAR (Vercel)
+1. Suba esta pasta para um repositório no GitHub e importe em vercel.com/new
+   (ou, com a CLI instalada, rode dentro da pasta:  npx vercel --prod).
+2. Não precisa configurar nada: o vercel.json já cuida do resto.
+3. A Vercel dá o endereço (ex.: meu-convite.vercel.app). O build coloca esse
+   endereço nas prévias automaticamente. Se usar domínio próprio, defina a
+   variável de ambiente BASE_URL (ex.: https://convite.com.br) e publique de novo.
+4. Cole o endereço no gerador-de-links.html e envie cada link.
+TESTE ANTES: mande um link só para você no WhatsApp e veja a prévia.
+Se trocar a imagem depois, use um link novo/limpe o cache no depurador do Facebook.
